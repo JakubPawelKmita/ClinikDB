@@ -83,7 +83,7 @@ DELIMITER ;
 
 -- Byc moze trzeba tam dodac 1 przy przeliczaniu day of week na enuma
 DELIMITER //
-CREATE TRIGGER checkDoctorOfficeHoure
+CREATE TRIGGER checkDoctorOfficeHour
   BEFORE INSERT
   ON `Visits`
   FOR EACH ROW
