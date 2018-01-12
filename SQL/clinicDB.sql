@@ -83,21 +83,26 @@ DELIMITER ;
 
 -- Byc moze trzeba tam dodac 1 przy przeliczaniu day of week na enuma
 DELIMITER //
-CREATE TRIGGER checkDoctorOfficeHoure
+CREATE TRIGGER checkDoctorOfficeHour
   BEFORE INSERT
   ON `Visits`
   FOR EACH ROW
   BEGIN
-    IF NEW.time NOT BETWEEN (
+    IF NEW.time < (
       SELECT H.beginning
       FROM Doctors D
         JOIN `Office Hours` H ON D.PWZ = H.doctor
-      WHERE D.PWZ = NEW.Doctor AND H.day = DAYOFWEEK(NEW.date))
-    AND
-    (SELECT H.end
-     FROM Doctors D
-       JOIN `Office Hours` H ON D.PWZ = H.doctor
-     WHERE D.PWZ = NEW.Doctor AND H.day = DAYOFWEEK(NEW.date))
+      WHERE D.PWZ = NEW.Doctor AND H.day = (DAYOFWEEK(NEW.date) + 1))
+       OR NEW.time >
+          (SELECT H.end
+           FROM Doctors D
+             JOIN `Office Hours` H ON D.PWZ = H.doctor
+           WHERE D.PWZ = NEW.Doctor AND H.day = (DAYOFWEEK(NEW.date) + 1)) OR (SELECT H.end
+                                                                               FROM Doctors D
+                                                                                 JOIN `Office Hours` H
+                                                                                   ON D.PWZ = H.doctor
+                                                                               WHERE D.PWZ = NEW.Doctor
+                                                                               LIMIT 1) IS NULL
     THEN
       SIGNAL SQLSTATE '12345'
       SET MESSAGE_TEXT = 'check constraint on Office Hours failed';
@@ -152,3 +157,38 @@ CREATE TABLE IF NOT EXISTS `clinicdb`.`prescription` (
   FOREIGN KEY (`medicine`) REFERENCES `medicines` (`ID`)
 )
   ENGINE = InnoDB;
+
+-- new checks because we don't want double references
+DELIMITER //
+CREATE TRIGGER checkIsNew
+  BEFORE INSERT
+  ON `prescription`
+  FOR EACH ROW
+  BEGIN
+    IF (SELECT visit_ID
+        FROM prescription
+        WHERE visit_ID = NEW.visit_ID AND medicine = NEW.medicine) IS NOT NULL
+    THEN
+      SIGNAL SQLSTATE '23456'
+      SET MESSAGE_TEXT = 'check isNew failed';
+    END IF;
+  END
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER checkIsNew
+  BEFORE INSERT
+  ON `recognition`
+  FOR EACH ROW
+  BEGIN
+    IF (SELECT visit_ID
+        FROM recognition
+        WHERE visit_ID = NEW.visit_ID AND disease = NEW.disease) IS NOT NULL
+    THEN
+      SIGNAL SQLSTATE '23456'
+      SET MESSAGE_TEXT = 'check isNew failed';
+    END IF;
+  END
+//
+DELIMITER ;
