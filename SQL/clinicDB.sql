@@ -9,6 +9,48 @@ CREATE TABLE IF NOT EXISTS `clinicdb`.`Doctors` (
 )
   ENGINE = InnoDB;
 
+DELIMITER //
+CREATE TRIGGER checkPWZ
+  BEFORE INSERT
+  ON `Doctors`
+  FOR EACH ROW
+  BEGIN
+    IF (CAST(SUBSTR(NEW.PWZ, 1, 1) AS INT) = 0) OR
+       CAST(SUBSTR(NEW.PWZ, 1, 1) AS INT) <> MOD(((CAST(SUBSTR(NEW.PWZ, 2, 1) AS INT) * 1) +
+                                                  (CAST(SUBSTR(NEW.PWZ, 2, 1) AS INT) * 2) +
+                                                  (CAST(SUBSTR(NEW.PWZ, 2, 1) AS INT) * 3) +
+                                                  (CAST(SUBSTR(NEW.PWZ, 2, 1) AS INT) * 4) +
+                                                  (CAST(SUBSTR(NEW.PWZ, 2, 1) AS INT) * 5) +
+                                                  (CAST(SUBSTR(NEW.PWZ, 2, 1) AS INT) * 6)), 11)
+    THEN
+      SIGNAL SQLSTATE '12345'
+      SET MESSAGE_TEXT = 'check PWZ failed';
+    END IF;
+  END
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER createEmptyHours
+  AFTER INSERT
+  ON `Doctors`
+  FOR EACH ROW
+  BEGIN
+INSERT INTO `office hours` (`doctor`, `day`, `beginning`, `end`) VALUES (NEW.PWZ, 'Monday', '00:00:00', '00:00:00');
+INSERT INTO `office hours` (`doctor`, `day`, `beginning`, `end`)
+VALUES (NEW.PWZ, 'Tuesday', '00:00:00', '00:00:00');
+INSERT INTO `office hours` (`doctor`, `day`, `beginning`, `end`)
+VALUES (NEW.PWZ, 'Wednesday', '00:00:00', '00:00:00');
+INSERT INTO `office hours` (`doctor`, `day`, `beginning`, `end`)
+VALUES (NEW.PWZ, 'Thursday', '00:00:00', '00:00:00');
+INSERT INTO `office hours` (`doctor`, `day`, `beginning`, `end`) VALUES (NEW.PWZ, 'Friday', '00:00:00', '00:00:00');
+INSERT INTO `office hours` (`doctor`, `day`, `beginning`, `end`)
+VALUES (NEW.PWZ, 'Saturday', '00:00:00', '00:00:00');
+INSERT INTO `office hours` (`doctor`, `day`, `beginning`, `end`) VALUES (NEW.PWZ, 'Sunday', '00:00:00', '00:00:00');
+END
+//
+DELIMITER ;
+
 CREATE TABLE IF NOT EXISTS `clinicdb`.`Office Hours` (
   `doctor`    CHAR(7)                                                                             NOT NULL,
   `day`       ENUM ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
@@ -22,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `clinicdb`.`Office Hours` (
 
 DELIMITER //
 CREATE TRIGGER checkTime
-  BEFORE INSERT
+  BEFORE UPDATE
   ON `Office Hours`
   FOR EACH ROW
   BEGIN
@@ -64,49 +106,31 @@ CREATE TABLE IF NOT EXISTS `clinicdb`.`Visits` (
     ON DELETE CASCADE
 )
   ENGINE = InnoDB;
-/*
-DELIMITER //
-CREATE TRIGGER checkDate
-  BEFORE INSERT
-  ON `Visits`
-  FOR EACH ROW
-  BEGIN
-    IF NEW.date < CURRENT_DATE AND NEW.time < CURRENT_TIME
-    THEN
-      SIGNAL SQLSTATE '12345'
-      SET MESSAGE_TEXT = 'check constraint on Visits-date failed';
-    END IF;
-  END
-//
-DELIMITER ;
-*/
 
--- Byc moze trzeba tam dodac 1 przy przeliczaniu day of week na enuma
+-- Trigger sprawdzajacy, czy nie ma juz pacjenta zapisanego na dana godzine
 DELIMITER //
 CREATE TRIGGER checkDoctorOfficeHour
   BEFORE INSERT
   ON `Visits`
   FOR EACH ROW
   BEGIN
-    IF NEW.time < (
-      SELECT H.beginning
-      FROM Doctors D
-        JOIN `Office Hours` H ON D.PWZ = H.doctor
-      WHERE D.PWZ = NEW.Doctor AND H.day = (DAYOFWEEK(NEW.date) + 1))
-       OR NEW.time >
-          (SELECT H.end
-           FROM Doctors D
-             JOIN `Office Hours` H ON D.PWZ = H.doctor
-           WHERE D.PWZ = NEW.Doctor AND H.day = (DAYOFWEEK(NEW.date) + 1)) OR (SELECT H.end
-                                                                               FROM Doctors D
-                                                                                 JOIN `Office Hours` H
-                                                                                   ON D.PWZ = H.doctor
-                                                                               WHERE D.PWZ = NEW.Doctor
-                                                                               LIMIT 1) IS NULL
+    IF NOT (
+      CAST(NEW.time AS TIME) > (
+        SELECT CAST(H.beginning AS TIME)
+        FROM Doctors D
+          JOIN `Office Hours` H ON D.PWZ = H.doctor
+        WHERE D.PWZ = NEW.Doctor AND H.day = (DAYNAME(NEW.date)))
+      AND
+      CAST(NEW.time AS TIME) < (
+        SELECT CAST(H.end AS TIME)
+        FROM Doctors D
+          JOIN `Office Hours` H ON D.PWZ = H.doctor
+        WHERE D.PWZ = NEW.Doctor AND H.day = (DAYNAME(NEW.date))))
     THEN
       SIGNAL SQLSTATE '12345'
       SET MESSAGE_TEXT = 'check constraint on Office Hours failed';
     END IF;
+
     IF NEW.date < CURRENT_DATE AND NEW.time < CURRENT_TIME
     THEN
       SIGNAL SQLSTATE '12345'

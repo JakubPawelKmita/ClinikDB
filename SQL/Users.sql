@@ -43,9 +43,9 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`diseases` TO 'Doctor'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`medicines` TO 'Doctor'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`prescription` TO 'Doctor'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`recognition` TO 'Doctor'@'%';
+GRANT UPDATE ON clinicdb.`office hours` TO 'Doctor'@'%';
 GRANT SELECT ON clinicdb.`visits` TO 'Doctor'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`visit history` TO 'Doctor'@'%';
-GRANT SELECT ON clinicdb.`DoctorsPass` TO 'Doctor'@'%';
 GRANT CREATE TEMPORARY TABLES,
 CREATE VIEW,
 SHOW VIEW,
@@ -55,7 +55,6 @@ WITH MAX_QUERIES_PER_HOUR 0
   MAX_CONNECTIONS_PER_HOUR 0
   MAX_UPDATES_PER_HOUR 0
   MAX_USER_CONNECTIONS 0;
-GRANT ALL PRIVILEGES ON `clinicdb`.* TO 'Doctor'@'%';
 
 CREATE USER IF NOT EXISTS 'Patient'@'%'
   IDENTIFIED BY 'patientpass';
@@ -71,7 +70,3 @@ WITH MAX_QUERIES_PER_HOUR 0
   MAX_CONNECTIONS_PER_HOUR 0
   MAX_UPDATES_PER_HOUR 0
   MAX_USER_CONNECTIONS 0;
-GRANT ALL PRIVILEGES ON `clinicdb`.* TO 'Patient'@'%';
-
-
-

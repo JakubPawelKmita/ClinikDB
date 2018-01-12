@@ -9,7 +9,9 @@ SELECT * FROM `office hours` WHERE doctor = 'pwz';
 
 -- dodanie nowej wizyty
 INSERT INTO `visits` (`Doctor`, `Patient`, `time`, `date`)
-VALUES ('0987567', '12345678909', '00:00:00', '2018-01-13');
+VALUES ('0987567', '12345678909', '06:00:00', '2018-01-18');
+
+SELECT DAYNAME('2018-01-13');
 
 
 -- RECEPTIONIST
