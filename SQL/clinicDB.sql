@@ -17,11 +17,11 @@ CREATE TRIGGER checkPWZ
   BEGIN
     IF (CAST(SUBSTR(NEW.PWZ, 1, 1) AS INT) = 0) OR
        CAST(SUBSTR(NEW.PWZ, 1, 1) AS INT) <> MOD(((CAST(SUBSTR(NEW.PWZ, 2, 1) AS INT) * 1) +
-                                                  (CAST(SUBSTR(NEW.PWZ, 2, 1) AS INT) * 2) +
-                                                  (CAST(SUBSTR(NEW.PWZ, 2, 1) AS INT) * 3) +
-                                                  (CAST(SUBSTR(NEW.PWZ, 2, 1) AS INT) * 4) +
-                                                  (CAST(SUBSTR(NEW.PWZ, 2, 1) AS INT) * 5) +
-                                                  (CAST(SUBSTR(NEW.PWZ, 2, 1) AS INT) * 6)), 11)
+                                                  (CAST(SUBSTR(NEW.PWZ, 3, 1) AS INT) * 2) +
+                                                  (CAST(SUBSTR(NEW.PWZ, 4, 1) AS INT) * 3) +
+                                                  (CAST(SUBSTR(NEW.PWZ, 5, 1) AS INT) * 4) +
+                                                  (CAST(SUBSTR(NEW.PWZ, 6, 1) AS INT) * 5) +
+                                                  (CAST(SUBSTR(NEW.PWZ, 7, 1) AS INT) * 6)), 11)
     THEN
       SIGNAL SQLSTATE '12345'
       SET MESSAGE_TEXT = 'check PWZ failed';
