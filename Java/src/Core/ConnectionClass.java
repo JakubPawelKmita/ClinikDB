@@ -9,6 +9,9 @@ import java.sql.*;
 public class ConnectionClass {
     private String actualUser;
     private Connection con;
+    private String conName = "root";
+    private String pwd = "kopytko";
+    private String url = "jdbc:mysql://localhost:3306";
     public ConnectionClass(String actualUser) {
         this.actualUser = actualUser;
     }
@@ -16,7 +19,7 @@ public class ConnectionClass {
     public java.sql.Connection connect() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "kopytko");
+            java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clinicdb", "root", "kopytko");
             //java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306", actualUser, actualUser+"pwd");
             System.out.println("Connected succesfully");
             this.con = con;
@@ -55,5 +58,17 @@ public class ConnectionClass {
 
     public java.sql.Connection getConnectionRef() {
         return con;
+    }
+
+    public String getConName() {
+        return conName;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

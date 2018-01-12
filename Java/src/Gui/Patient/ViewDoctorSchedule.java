@@ -1,11 +1,16 @@
 package Gui.Patient;
 
+import Core.ConnectionClass;
+import com.sun.rowset.CachedRowSetImpl;
+import com.sun.rowset.JoinRowSetImpl;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.JoinRowSet;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,12 +21,18 @@ public class ViewDoctorSchedule extends Application {
     private Scene scene;
     private Connection con;
     private String docName, docSurname;
+    private String docID;
     public static void main(String[] args) {
         launch(args);
     }
 
     public ViewDoctorSchedule(java.sql.Connection con, String docName, String docSurname) {
         this.con = con; this.docName = docName ; this.docSurname = docSurname;
+        try {
+            getID();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -36,25 +47,54 @@ public class ViewDoctorSchedule extends Application {
 
     }
 
+    private void getID() throws SQLException{
+        Statement stmt = null;
+        String query =
+                "select PWZ " +
+                        "from " + "clinicdb" + ".doctors " +
+                        "WHERE " + "clinicdb.doctors.name = '" + docName + "'" + " AND " + "clinicdb.doctors.surname = '" + docSurname + "'";
+        stmt = con.createStatement();
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next())
+                docID = rs.getString("PWZ");
+        }
+        catch (SQLException e) {
+            System.out.println("błąd przy ściąganiu ID lekarza");
+        }
+
+    }
+
     public void viewSchedule() throws SQLException {
 
         Statement stmt = null;
-        String query =
-                "select day, beginning, end  " +
-                        "from " + "clinicdb" + ".office_hours" + " JOIN " + "clinicdb.doctors " + "ON" + "(clinicdb.office_hours.doctor = clinicdb.doctors.PWZ) " +
-                        "WHERE " + "clinicdb.doctors.name = " + docName + " AND " + "clinicdb.doctors.surname = " + docSurname;
-
         try {
-            stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                String begTime = rs.getString("beginning");
-                String endTime = rs.getString("end");
+            JoinRowSet jrs = new JoinRowSetImpl();
+            CachedRowSet hours = new CachedRowSetImpl();
+            hours.setCommand("SELECT * FROM clinicdb.office_hours");
+            hours.setUsername(new ConnectionClass("asdsa").getConName());
+            hours.setPassword(new ConnectionClass("asdasd").getPwd());
+            hours.setUrl(new ConnectionClass("asd").getUrl());
+            hours.execute();
+            CachedRowSet doctors = new CachedRowSetImpl();
+            doctors.setCommand("SELECT * FROM clinicdb.doctors");
+            doctors.setUsername(new ConnectionClass("asdsa").getConName());
+            doctors.setPassword(new ConnectionClass("asdasd").getPwd());
+            doctors.setUrl(new ConnectionClass("asd").getUrl());
+            doctors.execute();
+            jrs.addRowSet(hours, "doctor");
+            jrs.addRowSet(doctors, "PWZ");
+            //stmt = con.createStatement();
+            //ResultSet rs = stmt.executeQuery(query);
+            while (jrs.next()) {
+                String day = jrs.getString("day");
+                String begTime = jrs.getString("beginning");
+                String endTime = jrs.getString("end");
 
-                System.out.println(begTime + " " + endTime + "\t");
+                System.out.println(day + " " + begTime + " " + endTime + "\t");
             }
         } catch (SQLException e ) {
-            System.out.println("nie masz uprawnień!!!");
+            System.out.println("nie masz uprawnień???");
 
         } finally {
             if (stmt != null) { stmt.close(); }
