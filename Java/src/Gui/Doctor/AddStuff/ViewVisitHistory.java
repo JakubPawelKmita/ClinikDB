@@ -6,9 +6,19 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
+
 public class ViewVisitHistory extends Application {
     public static Stage window = new Stage();
     private Scene scene;
+    private Connection con;
+    private int id;
+
+    public ViewVisitHistory(Connection con, int id) {
+        this.con = con;
+        this.id = id;
+    }
+
 
     public static void main(String[] args) {
         launch(args);

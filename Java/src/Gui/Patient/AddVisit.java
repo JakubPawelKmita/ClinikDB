@@ -84,8 +84,13 @@ public class AddVisit extends Application {
                 java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(sdate);
                 java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
                 java.sql.Time sqlTime = new java.sql.Time(stime);
+                System.out.println(sqlTime);
                 PreparedStatement pstmt = con.prepareStatement("INSERT INTO visits (visits.Doctor, visits.Patient, visits.time, visits.date) " +
-                        "VALUES ('" + docID + "', '" +  "12345678909" + "', '" + sqlTime + "', '" + sqlDate + "')");
+                        "VALUES (?, ?, ?, ?)");
+                pstmt.setString(1, sdocName);
+                pstmt.setString(2, spesel);
+                pstmt.setTime(3, sqlTime);
+                pstmt.setDate(4, sqlDate);
                 pstmt.execute();
                 System.out.println("dodano wizytę");
             } catch (ParseException e) {

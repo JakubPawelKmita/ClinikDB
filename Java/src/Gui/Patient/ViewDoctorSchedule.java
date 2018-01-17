@@ -6,6 +6,9 @@ import com.sun.rowset.JoinRowSetImpl;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -22,6 +25,11 @@ public class ViewDoctorSchedule extends Application {
     private Connection con;
     private String docName, docSurname;
     private String docID;
+    private TableView<DoctorInfo> table;
+    private TableColumn<DoctorInfo, String> dayTable = new TableColumn<DoctorInfo, String>("Day");
+    private TableColumn<DoctorInfo, String> startHourTable = new TableColumn<DoctorInfo, String>("Start hours");
+    private TableColumn<DoctorInfo, String> finishHourTable = new TableColumn<DoctorInfo, String>("Finish hours");
+    private DoctorInfo doctorInfo;
     public static void main(String[] args) {
         launch(args);
     }
@@ -38,8 +46,22 @@ public class ViewDoctorSchedule extends Application {
     @Override
     public void start(Stage primaryStage) throws SQLException {
         window = primaryStage;
+
+        dayTable.setMinWidth(50);
+        dayTable.setCellValueFactory(new PropertyValueFactory<>("day"));
+
+        startHourTable.setMinWidth(50);
+        startHourTable.setCellValueFactory(new PropertyValueFactory<>("startHour"));
+
+        finishHourTable.setMinWidth(50);
+        finishHourTable.setCellValueFactory(new PropertyValueFactory<>("finishHour"));
+
+        table = new TableView<>();
+        table.getColumns().addAll(dayTable, startHourTable, finishHourTable);
+
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
+        layout.getChildren().add(table);
         scene = new Scene(layout, 500, 500);
         window.setScene(scene);
         viewSchedule();
@@ -90,7 +112,8 @@ public class ViewDoctorSchedule extends Application {
                 String day = jrs.getString("day");
                 String begTime = jrs.getString("beginning");
                 String endTime = jrs.getString("end");
-
+                doctorInfo = new DoctorInfo(day, begTime, endTime);
+                table.getItems().add(doctorInfo);
                 System.out.println(day + " " + begTime + " " + endTime + "\t");
             }
         } catch (SQLException e ) {
