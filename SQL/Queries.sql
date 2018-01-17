@@ -31,10 +31,10 @@ UPDATE `visits` SET `confirmation` = '1' WHERE `visits`.`ID` = 10;
 SELECT
   v.date        AS DATE,
   d.name        AS Disease,
-  `v h`.advices AS ADVICES,
+  `v_h`.advices AS ADVICES,
   m.name        AS Medicine,
   doc.surname   AS DOCTOR
-FROM ((((visits v RIGHT JOIN `visit history` `v h` ON v.ID = `v h`.visit_ID) LEFT JOIN (recognition r
+FROM ((((visits v RIGHT JOIN `visit_history` `v h` ON v.ID = `v h`.visit_ID) LEFT JOIN (recognition r
   JOIN diseases d ON r.disease = d.ID) ON `v h`.ID = r.visit_ID) LEFT JOIN (prescription p
   JOIN medicines m ON p.medicine = m.ID) ON `v h`.ID = p.visit_ID) JOIN doctors doc ON v.Doctor = doc.PWZ) JOIN
   patients pat ON pat.PESEL = v.Patient

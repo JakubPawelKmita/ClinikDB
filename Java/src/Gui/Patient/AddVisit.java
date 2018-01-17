@@ -87,7 +87,7 @@ public class AddVisit extends Application {
                 System.out.println(sqlTime);
                 PreparedStatement pstmt = con.prepareStatement("INSERT INTO visits (visits.Doctor, visits.Patient, visits.time, visits.date) " +
                         "VALUES (?, ?, ?, ?)");
-                pstmt.setString(1, sdocName);
+                pstmt.setString(1, docID);
                 pstmt.setString(2, spesel);
                 pstmt.setTime(3, sqlTime);
                 pstmt.setDate(4, sqlDate);
