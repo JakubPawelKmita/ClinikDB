@@ -30,6 +30,7 @@ public class AddVisitHistory extends Application {
     private TableColumn<MedicineInfo, String> medicines = new TableColumn<>("Medicines");
     private DiseaseInfo d;
     private MedicineInfo m;
+    private String visitHistoryId;
 
     public AddVisitHistory(Connection con, String pesel, String id) {
         this.con = con;
@@ -85,7 +86,7 @@ public class AddVisitHistory extends Application {
         PreparedStatement pstmt;
         try {
             pstmt = con.prepareStatement("INSERT INTO prescription (visit_ID, medicine) VALUES (?, ?);"); //dodanie leku dla pacjenta
-            pstmt.setString(1, id);
+            pstmt.setString(1, visitHistoryId);
             pstmt.setString(2, m.getId());
             pstmt.execute();
             pstmt.close();
@@ -99,7 +100,7 @@ public class AddVisitHistory extends Application {
         try {
             PreparedStatement pstmt;
             pstmt = con.prepareStatement("INSERT INTO recognition (visit_ID, disease) VALUES (?, ?);"); //dodanie choroby pacjenta
-            pstmt.setString(1, id);
+            pstmt.setString(1, visitHistoryId);
             pstmt.setString(2, d.getId());
             pstmt.execute();
             pstmt.close();
@@ -160,6 +161,23 @@ public class AddVisitHistory extends Application {
             pstmt.execute();
             pstmt.close();
             System.out.println("dodano historie wizyty");
-        } catch (SQLException e) {e.printStackTrace();}
+        } catch (SQLException e) {e.printStackTrace();} finally {
+            getVisitHistoryID();
+        }
+    }
+
+    private void getVisitHistoryID() {
+        PreparedStatement pstmt;
+        try {
+            pstmt = con.prepareStatement("SELECT ID FROM visit_history WHERE visit_ID = ?");
+            pstmt.setString(1, id);
+            pstmt.execute();
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+                visitHistoryId = rs.getString("ID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

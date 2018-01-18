@@ -15,16 +15,17 @@
       <file leaf-file-name="AddVisitHistory.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Gui/Doctor/AddStuff/AddVisitHistory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="448">
-              <caret line="160" column="26" lean-forward="true" selection-start-line="160" selection-start-column="26" selection-end-line="160" selection-end-column="26" />
+            <state relative-caret-position="193">
+              <caret line="164" column="12" lean-forward="false" selection-start-line="164" selection-start-column="12" selection-end-line="164" selection-end-column="12" />
               <folding>
-                <marker date="1516272978708" expanded="true" signature="2901:2960" ph="INSERT INTO prescription... " />
-                <marker date="1516272978708" expanded="true" signature="3400:3457" ph="INSERT INTO recognition... " />
-                <marker date="1516272978708" expanded="true" signature="3855:3869" ph="SELECT * FRO... medicines" />
-                <marker date="1516272978708" expanded="true" signature="3855:3877" ph="SELECT * FRO... diseases" />
-                <marker date="1516272978708" expanded="true" signature="4491:4505" ph="SELECT * FRO... diseases" />
-                <marker date="1516272978708" expanded="true" signature="4491:4514" ph="SELECT * FRO... medicines" />
-                <marker date="1516272978708" expanded="true" signature="5398:5457" ph="INSERT INTO visit_history... " />
+                <marker date="1516273381351" expanded="true" signature="2936:2995" ph="INSERT INTO prescription... " />
+                <marker date="1516273381351" expanded="true" signature="3447:3504" ph="INSERT INTO recognition... " />
+                <marker date="1516273381351" expanded="true" signature="3914:3928" ph="SELECT * FRO... medicines" />
+                <marker date="1516273381351" expanded="true" signature="3914:3936" ph="SELECT * FRO... diseases" />
+                <marker date="1516273381351" expanded="true" signature="4550:4564" ph="SELECT * FRO... diseases" />
+                <marker date="1516273381351" expanded="true" signature="4550:4573" ph="SELECT * FRO... medicines" />
+                <marker date="1516273381351" expanded="true" signature="5457:5516" ph="INSERT INTO visit_history... " />
+                <marker date="1516273381351" expanded="true" signature="5972:6019" ph="SELECT ID FR... visit_history" />
               </folding>
             </state>
           </provider>
@@ -444,12 +445,12 @@
       <workItem from="1516043863456" duration="32000" />
       <workItem from="1516172827792" duration="9891000" />
       <workItem from="1516211562440" duration="4337000" />
-      <workItem from="1516267346064" duration="4471000" />
+      <workItem from="1516267346064" duration="4781000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57493000" />
+    <option name="totallyTimeSpent" value="57803000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -457,14 +458,14 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32979852" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32979852" sideWeight="0.49791667" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32979852" sideWeight="0.50416666" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32979852" sideWeight="0.50625" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32979852" sideWeight="0.49583334" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32979852" sideWeight="0.49375" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -645,13 +646,14 @@
         <state relative-caret-position="85">
           <caret line="9" column="11" lean-forward="false" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
           <folding>
-            <marker date="1516272978708" expanded="true" signature="2901:2960" ph="INSERT INTO prescription... " />
-            <marker date="1516272978708" expanded="true" signature="3400:3457" ph="INSERT INTO recognition... " />
-            <marker date="1516272978708" expanded="true" signature="3855:3869" ph="SELECT * FRO... medicines" />
-            <marker date="1516272978708" expanded="true" signature="3855:3877" ph="SELECT * FRO... diseases" />
-            <marker date="1516272978708" expanded="true" signature="4491:4505" ph="SELECT * FRO... diseases" />
-            <marker date="1516272978708" expanded="true" signature="4491:4514" ph="SELECT * FRO... medicines" />
-            <marker date="1516272978708" expanded="true" signature="5398:5457" ph="INSERT INTO visit_history... " />
+            <marker date="1516273381351" expanded="true" signature="2936:2995" ph="INSERT INTO prescription... " />
+            <marker date="1516273381351" expanded="true" signature="3447:3504" ph="INSERT INTO recognition... " />
+            <marker date="1516273381351" expanded="true" signature="3914:3928" ph="SELECT * FRO... medicines" />
+            <marker date="1516273381351" expanded="true" signature="3914:3936" ph="SELECT * FRO... diseases" />
+            <marker date="1516273381351" expanded="true" signature="4550:4564" ph="SELECT * FRO... diseases" />
+            <marker date="1516273381351" expanded="true" signature="4550:4573" ph="SELECT * FRO... medicines" />
+            <marker date="1516273381351" expanded="true" signature="5457:5516" ph="INSERT INTO visit_history... " />
+            <marker date="1516273381351" expanded="true" signature="5972:6019" ph="SELECT ID FR... visit_history" />
           </folding>
         </state>
       </provider>
@@ -911,16 +913,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Gui/Doctor/AddStuff/AddVisitHistory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="160" column="26" lean-forward="true" selection-start-line="160" selection-start-column="26" selection-end-line="160" selection-end-column="26" />
+        <state relative-caret-position="193">
+          <caret line="164" column="12" lean-forward="false" selection-start-line="164" selection-start-column="12" selection-end-line="164" selection-end-column="12" />
           <folding>
-            <marker date="1516272978708" expanded="true" signature="2901:2960" ph="INSERT INTO prescription... " />
-            <marker date="1516272978708" expanded="true" signature="3400:3457" ph="INSERT INTO recognition... " />
-            <marker date="1516272978708" expanded="true" signature="3855:3869" ph="SELECT * FRO... medicines" />
-            <marker date="1516272978708" expanded="true" signature="3855:3877" ph="SELECT * FRO... diseases" />
-            <marker date="1516272978708" expanded="true" signature="4491:4505" ph="SELECT * FRO... diseases" />
-            <marker date="1516272978708" expanded="true" signature="4491:4514" ph="SELECT * FRO... medicines" />
-            <marker date="1516272978708" expanded="true" signature="5398:5457" ph="INSERT INTO visit_history... " />
+            <marker date="1516273381351" expanded="true" signature="2936:2995" ph="INSERT INTO prescription... " />
+            <marker date="1516273381351" expanded="true" signature="3447:3504" ph="INSERT INTO recognition... " />
+            <marker date="1516273381351" expanded="true" signature="3914:3928" ph="SELECT * FRO... medicines" />
+            <marker date="1516273381351" expanded="true" signature="3914:3936" ph="SELECT * FRO... diseases" />
+            <marker date="1516273381351" expanded="true" signature="4550:4564" ph="SELECT * FRO... diseases" />
+            <marker date="1516273381351" expanded="true" signature="4550:4573" ph="SELECT * FRO... medicines" />
+            <marker date="1516273381351" expanded="true" signature="5457:5516" ph="INSERT INTO visit_history... " />
+            <marker date="1516273381351" expanded="true" signature="5972:6019" ph="SELECT ID FR... visit_history" />
           </folding>
         </state>
       </provider>
