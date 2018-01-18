@@ -13,8 +13,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.*;
 import java.sql.SQLException;
 
 public class Login extends Application {
@@ -24,7 +26,7 @@ public class Login extends Application {
     }
     private static Stage window;
     private Label login, pwd, user;
-    private Button connect;
+    private Button connect, make, load;
     private TextField tLogin, tPwd;
     private ComboBox<String> userType = new ComboBox<String>();
     private String actualUser;
@@ -48,6 +50,11 @@ public class Login extends Application {
 
         bSet = new Button("Set");
         bSet.setOnAction(e -> setType());
+        make = new Button("Make backup");
+        make.setOnAction(e -> makeBackup());
+        load = new Button("Load backup");
+        load.setOnAction(e -> loadBackup());
+
 
         connect = new Button("Log in");
         connect.setOnAction(e -> {
@@ -60,12 +67,78 @@ public class Login extends Application {
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(login, tLogin, pwd, tPwd, user, userType, bSet, connect);
+        layout.getChildren().addAll(login, tLogin, pwd, tPwd, user, userType, bSet, connect, make, load);
 
         scene = new Scene(layout, 500, 500);
         window.setScene(scene);
 
         window.show();
+    }
+
+    private void loadBackup() {
+        String path, path2;
+        path = "C:\\Users\\pawit\\Desktop\\backup\\backup";
+        Process exec;
+        String cmd = "cmd.exe";
+        String c = "/c";
+        FileChooser fc = new FileChooser();
+        path = fc.showOpenDialog(load.getScene().getWindow()).toString();
+        String[] execCmd = new String[]{cmd, c, "mysql", "clinicdb", "-u", "root", "-p", "kopytko", "-e", " source " + path};
+        try {
+            exec = Runtime.getRuntime().exec(execCmd);
+            int proc = exec.waitFor();
+            if (proc == 0) {
+                System.out.println("DATABASE RESTORED SUCCESSFULLY");
+            } else System.out.println("DATABASE NOT RESTORED");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void makeBackup() {
+        String path, path2;
+        path = "C:\\Users\\pawit\\Desktop\\backup\\backup";
+        String test = "C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\mysqldump -u root -p kopytko --add-drop-database -B clinicdb -r " + path + "backup";
+        Process exec;
+        Process runtimeProcess;
+        String cmd = "cmd.exe";
+        String c = "/c";
+        String DBPASS;
+
+        String command2 = "mysqldump -u root -pkopytko clinicdb -R -E --triggers > C:\\Users\\pawit\\Desktop\\backup\\backup.sql";
+        try {
+
+            runtimeProcess = Runtime.getRuntime().exec(new String[]{cmd,c,command2});
+            DBPASS = "";
+            command2 = "";
+            int processComplete = runtimeProcess.waitFor();
+
+            if (processComplete == 0) {
+                System.out.println("DZIALA BACKUP");
+                InputStream inputStream = runtimeProcess.getInputStream();
+                byte[] buffer = new byte[inputStream.available()];
+                inputStream.read(buffer);
+
+                String str = new String(buffer);
+                System.out.println(str);
+
+            } else {
+                InputStream errorStream = runtimeProcess.getErrorStream();
+                byte[] buffer = new byte[errorStream.available()];
+                errorStream.read(buffer);
+
+                String str = new String(buffer);
+                System.out.println(str);
+
+
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+        }
     }
 
     private void setType() {

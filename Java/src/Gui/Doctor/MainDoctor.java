@@ -95,8 +95,13 @@ public class MainDoctor extends Application {
     }
 
     private void viewVisit() {
-        ViewVisitHistory v = new ViewVisitHistory(con, row.getPesel());
-        v.start(ViewVisitHistory.window);
+        System.out.println(row.getConfirmation());
+        String s = row.getConfirmation();
+        int x = Integer.parseInt(s);
+        if(x != 0) {
+            ViewVisitHistory v = new ViewVisitHistory(con, row.getPesel());
+            v.start(ViewVisitHistory.window);
+        }
     }
 
     private void addVisit() {
