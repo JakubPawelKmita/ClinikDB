@@ -147,9 +147,11 @@ public class AddVisitHistory extends Application {
     }
 
     private void addVisitHistory() {
+//        System.out.println("medicine id " + m.getId());
+      //  System.out.println("disease id " + d.getId());
         try {
-            System.out.println("medicine id " + m.getId());
-            System.out.println("disease id " + d.getId());
+          //  System.out.println("medicine id " + m.getId());
+           // System.out.println("disease id " + d.getId());
             porada = prescription.getText();
             PreparedStatement pstmt;
             pstmt = con.prepareStatement("INSERT INTO visit_history (visit_ID, advices) VALUES (?, ?);"); //dodanie porady
