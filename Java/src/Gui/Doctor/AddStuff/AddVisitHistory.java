@@ -35,6 +35,7 @@ public class AddVisitHistory extends Application {
         this.con = con;
         this.pesel = pesel;
         this.id = id;
+        System.out.println("ID WYZYTY " + id);
     }
 
     public static void main(String[] args) {
@@ -59,7 +60,7 @@ public class AddVisitHistory extends Application {
         pres = new Label("Enter prescription");
         prescription = new TextField();
 
-        add = new Button("Add visit history");
+        add = new Button("Add comment to visit history");
         add.setOnAction(e -> addVisitHistory());
         addDisease = new Button("Add Disease to visit history");
         addDisease.setOnAction(e -> addDiseaseName());
@@ -81,16 +82,36 @@ public class AddVisitHistory extends Application {
 
     private void addMedicineName() {
         m = tableM.getSelectionModel().getSelectedItem();
+        PreparedStatement pstmt;
+        try {
+            pstmt = con.prepareStatement("INSERT INTO prescription (visit_ID, medicine) VALUES (?, ?);"); //dodanie leku dla pacjenta
+            pstmt.setString(1, id);
+            pstmt.setString(2, m.getId());
+            pstmt.execute();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addDiseaseName() {
         d = tableD.getSelectionModel().getSelectedItem();
+        try {
+            PreparedStatement pstmt;
+            pstmt = con.prepareStatement("INSERT INTO recognition (visit_ID, disease) VALUES (?, ?);"); //dodanie choroby pacjenta
+            pstmt.setString(1, id);
+            pstmt.setString(2, d.getId());
+            pstmt.execute();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showDiseases() {
         try {
             tableD.getItems().clear();
-            PreparedStatement stmt = con.prepareStatement("SELECT * FROM medicines");
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM diseases");
             stmt.execute();
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
@@ -109,7 +130,7 @@ public class AddVisitHistory extends Application {
         PreparedStatement stmt = null;
         try {
             tableM.getItems().clear();
-            stmt = con.prepareStatement("SELECT * FROM diseases");
+            stmt = con.prepareStatement("SELECT * FROM medicines");
             stmt.execute();
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
@@ -127,20 +148,13 @@ public class AddVisitHistory extends Application {
 
     private void addVisitHistory() {
         try {
+            System.out.println("medicine id " + m.getId());
+            System.out.println("disease id " + d.getId());
             porada = prescription.getText();
-            PreparedStatement pstmt = con.prepareStatement("INSERT INTO visit_history (visit_ID, advices) VALUES (?, ?);"); //dodanie porady
+            PreparedStatement pstmt;
+            pstmt = con.prepareStatement("INSERT INTO visit_history (visit_ID, advices) VALUES (?, ?);"); //dodanie porady
             pstmt.setString(1, id);
             pstmt.setString(2, porada);
-            pstmt.execute();
-            pstmt.close();
-            pstmt = con.prepareStatement("INSERT INTO recognition (visit_ID, disease) VALUES (?, ?);"); //dodanie choroby pacjenta
-            pstmt.setString(1, id);
-            pstmt.setString(2, d.getId());
-            pstmt.execute();
-            pstmt.close();
-            pstmt = con.prepareStatement("INSERT INTO prescription (visit_ID, medicine) VALUES (?, ?);"); //dodanie leku dla pacjenta
-            pstmt.setString(1, id);
-            pstmt.setString(2, m.getId());
             pstmt.execute();
             pstmt.close();
             System.out.println("dodano historie wizyty");

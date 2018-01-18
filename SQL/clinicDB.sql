@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `clinicdb`.`Office Hours` (
 DELIMITER //
 CREATE TRIGGER checkTime
   BEFORE UPDATE
-  ON `Office Hours`
+  ON `office_hours`
   FOR EACH ROW
   BEGIN
     IF NEW.beginning > NEW.end
