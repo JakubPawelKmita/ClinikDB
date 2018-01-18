@@ -83,7 +83,7 @@ public class Login extends Application {
         String c = "/c";
         FileChooser fc = new FileChooser();
         path = fc.showOpenDialog(load.getScene().getWindow()).toString();
-        String[] execCmd = new String[]{cmd, c, "mysql", "clinicdb", "-u", "root", "-p", "kopytko", "-e", " source " + path};
+        String[] execCmd = new String[]{cmd, c, "mysql -u root -pkopytko clinicdb < C:\\Users\\pawit\\Desktop\\backup\\backup.sql"};
         try {
             exec = Runtime.getRuntime().exec(execCmd);
             int proc = exec.waitFor();

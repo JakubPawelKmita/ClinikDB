@@ -21,7 +21,7 @@ public class MainReceptionist extends Application {
     private Scene scene;
     private java.sql.Connection con;
     private Button delete, update, show, addDoc, set;
-    private int visitID = 2;
+    private String visitID;
     private TableView<PatientInfo> table;
     private TableColumn<PatientInfo, String> id = new TableColumn<PatientInfo, String>("ID");
     private TableColumn<PatientInfo, String> pesel = new TableColumn<PatientInfo, String>("Pesel");
@@ -102,8 +102,9 @@ public class MainReceptionist extends Application {
 
     private void deleteVisit() {
         try {
-            visitID = Integer.parseInt(row.getId());
-            PreparedStatement pstmt = con.prepareStatement("DELETE FROM visits WHERE visits.ID = " + visitID);
+            visitID = row.getId();
+            PreparedStatement pstmt = con.prepareStatement("DELETE FROM visits WHERE visits.ID = ?");
+            pstmt.setString(1, visitID);
             pstmt.execute();
             showVisits();
             System.out.println("Usunięto wizytę");
@@ -136,8 +137,9 @@ public class MainReceptionist extends Application {
     private void updateVisit() {
         //UPDATE `visits` SET `confirmation` = '1' WHERE `visits`.`ID` = 10;
         try {
-            visitID = Integer.parseInt(row.getId());
-            PreparedStatement pstmt = con.prepareStatement("UPDATE visits SET confirmation = 1 WHERE visits.ID = " + visitID);
+            visitID = row.getId();
+            PreparedStatement pstmt = con.prepareStatement("UPDATE visits SET confirmation = 1 WHERE visits.ID = ?");
+            pstmt.setString(1, visitID);
             pstmt.execute();
             showVisits();
             System.out.println("Wizyta updejtowana");
