@@ -95,7 +95,7 @@ public class MainDoctor extends Application {
     }
 
     private void viewVisit() {
-        ViewVisitHistory v = new ViewVisitHistory(con, Integer.parseInt(row.getId()));
+        ViewVisitHistory v = new ViewVisitHistory(con, row.getPesel());
         v.start(ViewVisitHistory.window);
     }
 
