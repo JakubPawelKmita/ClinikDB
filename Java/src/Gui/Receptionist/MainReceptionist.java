@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -30,6 +31,7 @@ public class MainReceptionist extends Application {
     private TableColumn<PatientInfo, String> conf = new TableColumn<PatientInfo, String>("Confirmation");
     private PatientInfo patientInfo;
     private PatientInfo row;
+    private Label label;
 
     public MainReceptionist(java.sql.Connection con) {
             this.con = con;
@@ -66,7 +68,7 @@ public class MainReceptionist extends Application {
                 row = table.getSelectionModel().getSelectedItem();
             }
         });
-
+        label = new Label("");
         show = new Button("Show visits");
         show.setOnAction(e -> showVisits());
         delete = new Button("Delete visit");
@@ -84,7 +86,7 @@ public class MainReceptionist extends Application {
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(show, update, delete, addDoc, addPat, set, table);
+        layout.getChildren().addAll(show, update, delete, addDoc, addPat, set, label, table);
         scene = new Scene(layout, 500, 500);
         window.setScene(scene);
 
@@ -114,9 +116,11 @@ public class MainReceptionist extends Application {
             pstmt.setString(1, visitID);
             pstmt.execute();
             showVisits();
-            System.out.println("Usunięto wizytę");
+            label.setText("Usunięto wizytę");
         } catch (SQLException e) {
-            e.printStackTrace();
+            label.setText("Wystąpił błąd podczas wykonywania operacji!");
+        } catch (NullPointerException e) {
+            label.setText("Nie wybrałeś wizyty do usunięcia!");
         }
     }
 
@@ -138,7 +142,7 @@ public class MainReceptionist extends Application {
                 System.out.println(patient + " " + date + " " + time + " " + conf + "\t");
             }
             System.out.println("wyświetlono wizyty dla recepcjonisty");
-        } catch (SQLException e) {e.printStackTrace();}
+        } catch (SQLException e) {label.setText("Wystąpił błąd podczas wykonywania operacji!");}
     }
 
     private void updateVisit() {
@@ -150,7 +154,10 @@ public class MainReceptionist extends Application {
             pstmt.execute();
             showVisits();
             System.out.println("Wizyta updejtowana");
-        } catch (SQLException e) {e.printStackTrace();}
+        } catch (SQLException e) {label.setText("Wprowadziłeś błędne dane");}
+          catch (NullPointerException e) {
+                label.setText("Nie wybrałeś wizyty do updatetowania");
+          }
     }
 
 }

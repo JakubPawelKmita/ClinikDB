@@ -12,6 +12,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,7 +20,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,6 +36,7 @@ public class MainDoctor extends Application {
     private TableColumn<PatientInfo, String> hour = new TableColumn<PatientInfo, String>("Hour");
     private TableColumn<PatientInfo, String> conf = new TableColumn<PatientInfo, String>("Confirmation");
     private PatientInfo patientInfo, row;
+    private Label label;
 
     public MainDoctor(java.sql.Connection con) {
         this.con = con;
@@ -82,10 +83,11 @@ public class MainDoctor extends Application {
         addM.setOnAction(e -> addMedicine());
         addV.setOnAction(e -> addVisit());
         view.setOnAction(e -> viewVisit());
+        label = new Label("");
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(addD, addM, addV, view, table);
+        layout.getChildren().addAll(addD, addM, addV, view, label, table);
         scene = new Scene(layout, 500, 500);
         showVisits();
         window.setScene(scene);
@@ -95,18 +97,22 @@ public class MainDoctor extends Application {
     }
 
     private void viewVisit() {
-        System.out.println(row.getConfirmation());
-        String s = row.getConfirmation();
-        int x = Integer.parseInt(s);
-        if(x != 0) {
-            ViewVisitHistory v = new ViewVisitHistory(con, row.getPesel());
-            v.start(ViewVisitHistory.window);
-        }
+        try {
+            String s = row.getConfirmation();
+            int x = Integer.parseInt(s);
+            if(x != 0) {
+                ViewVisitHistory v = new ViewVisitHistory(con, row.getPesel());
+                v.start(ViewVisitHistory.window);
+            }
+        } catch (NullPointerException e) { label.setText("Nie wybrałeś wizyty!");}
+
     }
 
     private void addVisit() {
-        AddVisitHistory v = new AddVisitHistory(con, row.getPesel(), row.getId());
-        v.start(AddVisitHistory.window);
+        if(Integer.parseInt(row.getConfirmation()) == 1) {
+            AddVisitHistory v = new AddVisitHistory(con, row.getPesel(), row.getId());
+            v.start(AddVisitHistory.window);
+        } else label.setText("Nie możesz dodać historii wizyty, która jest niepotwierdzona lub się nie odbyła");
     }
 
     private void addMedicine() {

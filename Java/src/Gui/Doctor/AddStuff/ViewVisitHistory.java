@@ -95,6 +95,8 @@ public class ViewVisitHistory extends Application {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            System.out.println("Nie wybrałeś wizyty!");
         }
     }
 }

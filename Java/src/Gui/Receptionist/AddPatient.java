@@ -1,5 +1,6 @@
 package Gui.Receptionist;
 
+import com.mysql.jdbc.MysqlDataTruncation;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -17,7 +18,7 @@ public class AddPatient extends Application {
     private Connection con;
     private Scene scene;
     public static Stage window = new Stage();
-    private Label pesel, name, surname, birthday, city, street, h_number, f_number, post_code, post_office, phone;
+    private Label pesel, name, surname, birthday, city, street, h_number, f_number, post_code, post_office, phone, label;
     private TextField peselt, namet, surnamet, birthdayt, cityt, streett, h_numbert, f_numbert, post_codet, post_officet, phonet;
     private Button add;
 
@@ -44,6 +45,7 @@ public class AddPatient extends Application {
         post_code = new Label("Enter postal code");
         post_office = new Label("Enter postal office");
         phone = new Label("Enter phone number");
+        label = new Label("");
 
         peselt = new TextField();
         namet = new TextField();
@@ -62,13 +64,12 @@ public class AddPatient extends Application {
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(pesel, peselt, name, namet, surname, surnamet, birthday, birthdayt, city, cityt, street, streett, h_number, h_numbert, f_number, f_numbert, post_code, post_codet, post_office, post_officet, phone, phonet, add);
+        layout.getChildren().addAll(pesel, peselt, name, namet, surname, surnamet, birthday, birthdayt, city, cityt, street, streett, h_number, h_numbert, f_number, f_numbert, post_code, post_codet, post_office, post_officet, phone, phonet, label, add);
 
-        scene = new Scene(layout, 500, 750);
+        scene = new Scene(layout, 500, 780);
         window.setScene(scene);
 
         window.show();
-
 
 
     }
@@ -93,7 +94,8 @@ public class AddPatient extends Application {
             pstmt.close();
             System.out.println("Udało się dodać pacjenta");
         } catch (SQLException e) {
-            e.printStackTrace();
+            label.setText("Wprowadziłeś błędne dane");
+
         }
     }
 }

@@ -1,5 +1,6 @@
 package Core;
 
+import java.io.*;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,24 +10,34 @@ import java.sql.*;
 public class ConnectionClass {
     private String actualUser;
     private Connection con;
-    private String conName = "root";
-    private String pwd = "kopytko";
+    private String pwd;
     private String url = "jdbc:mysql://localhost:3306";
     public ConnectionClass(String actualUser) {
         this.actualUser = actualUser;
+        System.out.println(actualUser);
     }
 
     public java.sql.Connection connect() {
         try {
+            FileInputStream fstream = new FileInputStream(actualUser + ".txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            pwd = br.readLine();
+            System.out.println(pwd);
+            br.close();
+            fstream.close();
             Class.forName("com.mysql.jdbc.Driver");
-            java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clinicdb", "root", "kopytko");
-            //java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306", actualUser, actualUser+"pwd");
+            //java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clinicdb", "root", "kopytko");
+            java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clinicdb", actualUser, pwd);
             System.out.println("Connected succesfully");
             this.con = con;
             return con;
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -61,7 +72,7 @@ public class ConnectionClass {
     }
 
     public String getConName() {
-        return conName;
+        return actualUser;
     }
 
     public String getPwd() {

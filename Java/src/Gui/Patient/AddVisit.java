@@ -1,5 +1,7 @@
 package Gui.Patient;
 
+import com.mysql.jdbc.exceptions.MySQLDataException;
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -20,13 +22,13 @@ public class AddVisit extends Application {
     private Connection con;
     private Button addVisit;
     private TextField pesel, docName, docSurname, time, date;
-    private Label Lpesel, LdocName, LdocSurname, Ltime, Ldate;
-    String spesel;
-    String sdocName;
-    String sdocSurname;
-    long stime;
-    String sdate;
-    String docID;
+    private Label Lpesel, LdocName, LdocSurname, Ltime, Ldate, label;
+    private String spesel;
+    private String sdocName;
+    private String sdocSurname;
+    private long stime;
+    private String sdate;
+    private String docID;
 
     public static void main(String[] args) {
         launch(args);
@@ -45,7 +47,13 @@ public class AddVisit extends Application {
             try {
                 setVisit();
             } catch (SQLException e1) {
-                e1.printStackTrace();
+                label.setText("Nie wpisałeś wszystkich danych!");
+            } catch (NullPointerException ef) {
+                label.setText("Nie wpisałeś wszystkich danych");
+            } catch (NumberFormatException nm) {
+                label.setText("Wprowadziłeś błędne dane (zły format, nieprawidłowe dane)");
+            } catch (ArrayIndexOutOfBoundsException eg) {
+                label.setText("Nie wpisałeś wszystkich danych, bądź wprowadziłeś nieprawidłowe!");
             }
         });
 
@@ -55,6 +63,7 @@ public class AddVisit extends Application {
         time = new TextField();
         date = new TextField();
 
+        label = new Label("");
         Lpesel = new Label("Enter your pesel");
         LdocName = new Label("Enter doc's name");
         LdocSurname = new Label("Enter doc's surname");
@@ -63,7 +72,7 @@ public class AddVisit extends Application {
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(Lpesel, pesel, LdocName, docName, LdocSurname, docSurname, Ltime, time, Ldate, date, addVisit);
+        layout.getChildren().addAll(Lpesel, pesel, LdocName, docName, LdocSurname, docSurname, Ltime, time, Ldate, date, addVisit, label);
         scene = new Scene(layout, 500, 500);
         window.setScene(scene);
 
@@ -94,12 +103,16 @@ public class AddVisit extends Application {
                 pstmt.execute();
                 System.out.println("dodano wizytę");
             } catch (ParseException e) {
-                e.printStackTrace();
+                label.setText("Nie wpisałeś wszystkich danych");
             }
+            }  catch (MySQLIntegrityConstraintViolationException e) {
+                label.setText("Wpisałeś błędny pesel");
+            } catch (java.lang.NumberFormatException e) {
+                label.setText("Nie wpisałeś wszystkich danych");
+            } catch (MySQLDataException e) {
 
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            } catch (ArrayIndexOutOfBoundsException e) {
+                label.setText("Nie wpisałeś wszystkich danych, bądź wprowadziłeś nieprawidłowe!");
         }
 
     }

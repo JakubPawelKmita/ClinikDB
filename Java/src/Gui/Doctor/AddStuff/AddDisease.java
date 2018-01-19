@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class AddDisease extends Application {
     public static Stage window = new Stage();
     private Scene scene;
-    private Label disease;
+    private Label disease, label;
     private TextField textDisease;
     private Button button;
     private String dis;
@@ -37,10 +37,11 @@ public class AddDisease extends Application {
         textDisease = new TextField();
         button = new Button("Add");
         button.setOnAction(e -> addDisease());
+        label = new Label("");
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(disease, textDisease, button);
+        layout.getChildren().addAll(disease, textDisease, button, label);
         scene = new Scene(layout, 500, 500);
         window.setScene(scene);
 
@@ -51,10 +52,15 @@ public class AddDisease extends Application {
     private void addDisease() {
         try {
             dis = textDisease.getText();
-            PreparedStatement pstmt = con.prepareStatement("INSERT INTO diseases (name) VALUES (?);");
-            pstmt.setString(1, dis);
-            pstmt.execute();
-            System.out.println("dodano chorobę");
+            if(dis.isEmpty()) {
+                label.setText("Nie wpisałeś nazwy choroby!");
+            }
+            else {
+                PreparedStatement pstmt = con.prepareStatement("INSERT INTO diseases (name) VALUES (?);");
+                pstmt.setString(1, dis);
+                pstmt.execute();
+                System.out.println("dodano chorobę");
+            }
         } catch (SQLException e) {e.printStackTrace();}
     }
 }

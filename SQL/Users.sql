@@ -39,13 +39,13 @@ GRANT ALL PRIVILEGES ON `clinicdb`.* TO 'receptionist'@'%';
 
 CREATE USER IF NOT EXISTS 'Doctor'@'%'
   IDENTIFIED BY 'doctorpass';
-GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`diseases` TO 'Doctor'@'%';
-GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`medicines` TO 'Doctor'@'%';
-GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`prescription` TO 'Doctor'@'%';
-GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`recognition` TO 'Doctor'@'%';
-GRANT UPDATE ON clinicdb.`office hours` TO 'Doctor'@'%';
-GRANT SELECT ON clinicdb.`visits` TO 'Doctor'@'%';
-GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`visit history` TO 'Doctor'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`diseases` TO 'lekarz'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`medicines` TO 'lekarz'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`prescription` TO 'lekaarz'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`recognition` TO 'lekarz'@'%';
+GRANT UPDATE ON clinicdb.`office hours` TO 'lekarz'@'%';
+GRANT SELECT ON clinicdb.`visits` TO 'lekarz'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON clinicdb.`visit history` TO 'lekarz'@'%';
 GRANT CREATE TEMPORARY TABLES,
 CREATE VIEW,
 SHOW VIEW,
