@@ -68,7 +68,7 @@ public class Login extends Application {
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(login, tLogin, pwd, tPwd, user, userType, bSet, connect, make, load, backup);
+        layout.getChildren().addAll(user, userType, bSet, connect, make, load, backup);
 
         scene = new Scene(layout, 500, 500);
         window.setScene(scene);
