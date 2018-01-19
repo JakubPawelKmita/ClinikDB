@@ -170,6 +170,7 @@ public class Login extends Application {
     }
 
     private void getConnection() throws SQLException {
+
         ConnectionClass connection = new ConnectionClass(actualUser);
         connection.connect();
         connection.viewTable(connection.getConnectionRef(), "clinicdb");
@@ -178,7 +179,7 @@ public class Login extends Application {
             doctor.start(MainDoctor.window);
         }
         else if (actualUser == "pacjent") {
-            MainPatient patient = new MainPatient(connection.getConnectionRef());
+            MainPatient patient = new MainPatient(connection.getConnectionRef(), connection.getActualUser());
             patient.start(MainPatient.window);
         }
         else if (actualUser == "recepcjonista") {

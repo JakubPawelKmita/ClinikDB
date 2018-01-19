@@ -30,6 +30,7 @@ public class AddVisitHistory extends Application {
     private TableColumn<MedicineInfo, String> medicines = new TableColumn<>("Medicines");
     private DiseaseInfo d;
     private MedicineInfo m;
+    private Label label = new Label();
     private String visitHistoryId;
 
     public AddVisitHistory(Connection con, String pesel, String id) {
@@ -71,7 +72,7 @@ public class AddVisitHistory extends Application {
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
         scene = new Scene(layout, 500, 500);
-        layout.getChildren().addAll(pres, prescription, add, tableD, addDisease, tableM, addMedicine);
+        layout.getChildren().addAll(pres, prescription, add, tableD, addDisease, tableM, addMedicine, label);
         
         showDiseases();
         showMedicines();
@@ -161,7 +162,11 @@ public class AddVisitHistory extends Application {
             pstmt.execute();
             pstmt.close();
             System.out.println("dodano historie wizyty");
-        } catch (SQLException e) {e.printStackTrace();} finally {
+        } catch (SQLException e) {e.printStackTrace();}
+          catch (NullPointerException e) {
+            label.setText("Nie wybrałeś wizyty, dla której chcesz stworzyć historię");
+          }
+        finally {
             getVisitHistoryID();
         }
     }

@@ -111,20 +111,20 @@ CREATE TABLE IF NOT EXISTS `clinicdb`.`Visits` (
 DELIMITER //
 CREATE TRIGGER checkDoctorOfficeHour
   BEFORE INSERT
-  ON `Visits`
+  ON `visits`
   FOR EACH ROW
   BEGIN
     IF NOT (
       CAST(NEW.time AS TIME) > (
         SELECT CAST(H.beginning AS TIME)
-        FROM Doctors D
-          JOIN `Office Hours` H ON D.PWZ = H.doctor
+        FROM doctors D
+          JOIN `office_hours` H ON D.PWZ = H.doctor
         WHERE D.PWZ = NEW.Doctor AND H.day = (DAYNAME(NEW.date)))
       AND
       CAST(NEW.time AS TIME) < (
         SELECT CAST(H.end AS TIME)
-        FROM Doctors D
-          JOIN `Office Hours` H ON D.PWZ = H.doctor
+        FROM doctors D
+          JOIN `office_hours` H ON D.PWZ = H.doctor
         WHERE D.PWZ = NEW.Doctor AND H.day = (DAYNAME(NEW.date))))
     THEN
       SIGNAL SQLSTATE '12345'
@@ -201,7 +201,7 @@ CREATE TRIGGER checkIsNew
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER checkIsNew
+CREATE TRIGGER checkIsNew2
   BEFORE INSERT
   ON `recognition`
   FOR EACH ROW

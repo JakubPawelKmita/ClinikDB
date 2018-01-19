@@ -1,5 +1,7 @@
 package Core;
 
+import javafx.scene.control.Label;
+
 import java.io.*;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -32,14 +34,10 @@ public class ConnectionClass {
             this.con = con;
             return con;
         } catch (SQLException e) {
-            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (NullPointerException e) {}
         return null;
     }
 
@@ -62,7 +60,8 @@ public class ConnectionClass {
         } catch (SQLException e ) {
             System.out.println("nie masz uprawnień!!!");
 
-        } finally {
+        } catch (NullPointerException e) {}
+        finally {
             if (stmt != null) { stmt.close(); }
         }
     }
@@ -81,5 +80,9 @@ public class ConnectionClass {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getActualUser(){
+        return  actualUser;
     }
 }

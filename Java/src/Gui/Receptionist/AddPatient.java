@@ -62,11 +62,11 @@ public class AddPatient extends Application {
         add = new Button("Add new patient");
         add.setOnAction(e -> addPatient());
 
-        VBox layout = new VBox(10);
-        layout.setPadding(new Insets(20, 20, 20, 20));
+        VBox layout = new VBox(5);
+        layout.setPadding(new Insets(10, 20, 20, 20));
         layout.getChildren().addAll(pesel, peselt, name, namet, surname, surnamet, birthday, birthdayt, city, cityt, street, streett, h_number, h_numbert, f_number, f_numbert, post_code, post_codet, post_office, post_officet, phone, phonet, label, add);
 
-        scene = new Scene(layout, 500, 780);
+        scene = new Scene(layout, 500, 680);
         window.setScene(scene);
 
         window.show();

@@ -30,12 +30,17 @@ public class ViewDoctorSchedule extends Application {
     private TableColumn<DoctorInfo, String> startHourTable = new TableColumn<DoctorInfo, String>("Start hours");
     private TableColumn<DoctorInfo, String> finishHourTable = new TableColumn<DoctorInfo, String>("Finish hours");
     private DoctorInfo doctorInfo;
+    private String pwd, user;
     public static void main(String[] args) {
         launch(args);
     }
 
-    public ViewDoctorSchedule(java.sql.Connection con, String docName, String docSurname) {
-        this.con = con; this.docName = docName ; this.docSurname = docSurname;
+    public ViewDoctorSchedule(java.sql.Connection con, String docName, String docSurname, String user, String pwd) {
+        this.con = con;
+        this.docName = docName ;
+        this.docSurname = docSurname;
+        this.user = user;
+        this.pwd = pwd;
         try {
             getID();
         } catch (SQLException e) {
@@ -93,15 +98,17 @@ public class ViewDoctorSchedule extends Application {
         try {
             JoinRowSet jrs = new JoinRowSetImpl();
             CachedRowSet hours = new CachedRowSetImpl();
-            hours.setCommand("SELECT * FROM clinicdb.office_hours");
-            hours.setUsername(new ConnectionClass("asdsa").getConName());
-            hours.setPassword(new ConnectionClass("asdasd").getPwd());
+            hours.setCommand("SELECT * FROM clinicdb.office_hours WHERE doctor = ?");
+            hours.setString(1, docID);
+            hours.setUsername(user);
+            hours.setPassword(pwd);
             hours.setUrl(new ConnectionClass("asd").getUrl());
             hours.execute();
             CachedRowSet doctors = new CachedRowSetImpl();
-            doctors.setCommand("SELECT * FROM clinicdb.doctors");
-            doctors.setUsername(new ConnectionClass("asdsa").getConName());
-            doctors.setPassword(new ConnectionClass("asdasd").getPwd());
+            doctors.setCommand("SELECT * FROM clinicdb.doctors WHERE PWZ = ?");
+            doctors.setString(1, docID);
+            doctors.setUsername(user);
+            doctors.setPassword(pwd);
             doctors.setUrl(new ConnectionClass("asd").getUrl());
             doctors.execute();
             jrs.addRowSet(hours, "doctor");

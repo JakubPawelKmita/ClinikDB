@@ -21,8 +21,10 @@ public class MainPatient extends Application {
     private TextField docName, docSurname;
     private Label docNameLabel, docSurnameLabel, label;
     private java.sql.Connection con;
+    private String actualUser;
 
-    public MainPatient(java.sql.Connection con) {
+    public MainPatient(java.sql.Connection con, String actualUser) {
+        this.actualUser = actualUser;
         this.con = con;
     }
 
@@ -64,14 +66,10 @@ public class MainPatient extends Application {
     }
 
     private void viewDoctor() throws SQLException {
-        PreparedStatement pstmt;
-        pstmt = con.prepareStatement("SELECT PWZ FROM doctors WHERE name = ? AND surname = ?");
-        pstmt.setString(1, docName.getText());
-        pstmt.setString(2, docSurname.getText());
-        pstmt.execute();
-        ResultSet rs = pstmt.executeQuery();
-        ViewDoctorSchedule view = new ViewDoctorSchedule(con, docName.getText(), docSurname.getText());
-        pstmt.close();
+
+        ViewDoctorSchedule view = new ViewDoctorSchedule(con, docName.getText(), docSurname.getText(), actualUser, actualUser+"pwd");
+        view.start(ViewDoctorSchedule.window);
+
     }
 
     private void setVisit() {

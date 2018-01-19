@@ -46,8 +46,8 @@ public class AddVisit extends Application {
         addVisit.setOnAction(e -> {
             try {
                 setVisit();
-            } catch (SQLException e1) {
-                label.setText("Nie wpisałeś wszystkich danych!");
+            } catch (SQLException el) {
+                el.printStackTrace();
             } catch (NullPointerException ef) {
                 label.setText("Nie wpisałeś wszystkich danych");
             } catch (NumberFormatException nm) {
@@ -88,12 +88,14 @@ public class AddVisit extends Application {
         stime = Long.parseLong(split[0]) * 3600000 + Long.parseLong(split[1]) * 60000 - 3600000;
         sdate = date.getText();
         docID = getDocId();
+        System.out.println(docID);
         try {
             try {
                 java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(sdate);
                 java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
                 java.sql.Time sqlTime = new java.sql.Time(stime);
                 System.out.println(sqlTime);
+                System.out.println(sqlDate);
                 PreparedStatement pstmt = con.prepareStatement("INSERT INTO visits (visits.Doctor, visits.Patient, visits.time, visits.date) " +
                         "VALUES (?, ?, ?, ?)");
                 pstmt.setString(1, docID);
@@ -103,12 +105,12 @@ public class AddVisit extends Application {
                 pstmt.execute();
                 System.out.println("dodano wizytę");
             } catch (ParseException e) {
-                label.setText("Nie wpisałeś wszystkich danych");
+                label.setText("Problem z parsowaniem");
             }
             }  catch (MySQLIntegrityConstraintViolationException e) {
                 label.setText("Wpisałeś błędny pesel");
             } catch (java.lang.NumberFormatException e) {
-                label.setText("Nie wpisałeś wszystkich danych");
+                e.printStackTrace();
             } catch (MySQLDataException e) {
 
             } catch (ArrayIndexOutOfBoundsException e) {

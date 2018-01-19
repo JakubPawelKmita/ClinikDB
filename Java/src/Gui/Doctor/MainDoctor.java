@@ -109,10 +109,15 @@ public class MainDoctor extends Application {
     }
 
     private void addVisit() {
-        if(Integer.parseInt(row.getConfirmation()) == 1) {
-            AddVisitHistory v = new AddVisitHistory(con, row.getPesel(), row.getId());
-            v.start(AddVisitHistory.window);
-        } else label.setText("Nie możesz dodać historii wizyty, która jest niepotwierdzona lub się nie odbyła");
+        try {
+            int x = Integer.parseInt(row.getConfirmation());
+            if(x == 1) {
+                AddVisitHistory v = new AddVisitHistory(con, row.getPesel(), row.getId());
+                v.start(AddVisitHistory.window);
+            } else label.setText("Nie możesz dodać historii wizyty, która jest niepotwierdzona lub się nie odbyła");
+        } catch (NullPointerException e) {
+            label.setText("Nie wybrałeś wizyty, dla której chcesz dodać historię!");
+        }
     }
 
     private void addMedicine() {
