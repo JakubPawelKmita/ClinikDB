@@ -20,7 +20,7 @@ public class MainReceptionist extends Application {
     public static Stage window = new Stage();
     private Scene scene;
     private java.sql.Connection con;
-    private Button delete, update, show, addDoc, set;
+    private Button delete, update, show, addDoc, set, addPat;
     private String visitID;
     private TableView<PatientInfo> table;
     private TableColumn<PatientInfo, String> id = new TableColumn<PatientInfo, String>("ID");
@@ -79,15 +79,22 @@ public class MainReceptionist extends Application {
         addDoc.setOnAction(e-> addDoctor());
         set = new Button("Set hours for a doctor");
         set.setOnAction(e -> setHours());
+        addPat = new Button("Add new patient");
+        addPat.setOnAction(e -> addNewPatient());
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(show, update, delete, addDoc, set, table);
+        layout.getChildren().addAll(show, update, delete, addDoc, addPat, set, table);
         scene = new Scene(layout, 500, 500);
         window.setScene(scene);
 
         window.show();
 
+    }
+
+    private void addNewPatient() {
+        AddPatient addPatient = new AddPatient(con);
+        addPatient.start(AddPatient.window);
     }
 
     private void setHours() {

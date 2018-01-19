@@ -25,7 +25,7 @@ public class Login extends Application {
         launch(args);
     }
     private static Stage window;
-    private Label login, pwd, user;
+    private Label login, pwd, user, backup;
     private Button connect, make, load;
     private TextField tLogin, tPwd;
     private ComboBox<String> userType = new ComboBox<String>();
@@ -38,6 +38,7 @@ public class Login extends Application {
 
         login = new Label("Type in login");
         tLogin = new TextField();
+        backup = new Label("");
 
         pwd = new Label("Type in password");
         tPwd = new TextField();
@@ -67,7 +68,7 @@ public class Login extends Application {
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(login, tLogin, pwd, tPwd, user, userType, bSet, connect, make, load);
+        layout.getChildren().addAll(login, tLogin, pwd, tPwd, user, userType, bSet, connect, make, load, backup);
 
         scene = new Scene(layout, 500, 500);
         window.setScene(scene);
@@ -79,17 +80,28 @@ public class Login extends Application {
         String path, path2;
         path = "C:\\Users\\pawit\\Desktop\\backup\\backup";
         Process exec;
+        String dbpass;
         String cmd = "cmd.exe";
         String c = "/c";
         FileChooser fc = new FileChooser();
+        try {
+            FileInputStream fstream = new FileInputStream("root.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            dbpass = br.readLine();
+            br.close();
+            fstream.close();
+        } catch ( IOException e1) {
+            e1.printStackTrace();
+            return;
+        }
         path = fc.showOpenDialog(load.getScene().getWindow()).toString();
-        String[] execCmd = new String[]{cmd, c, "mysql -u root -pkopytko clinicdb < C:\\Users\\pawit\\Desktop\\backup\\backup.sql"};
+        String[] execCmd = new String[]{cmd, c, "mysql -u root -p" + dbpass + " clinicdb < C:\\Users\\pawit\\Desktop\\backup\\backup.sql"};
         try {
             exec = Runtime.getRuntime().exec(execCmd);
             int proc = exec.waitFor();
             if (proc == 0) {
-                System.out.println("DATABASE RESTORED SUCCESSFULLY");
-            } else System.out.println("DATABASE NOT RESTORED");
+                backup.setText("Database successfully restored");
+            } else backup.setText("Could not restore database");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,16 +111,26 @@ public class Login extends Application {
     }
 
     private void makeBackup() {
-        String path, path2;
+        String path, path2, dbpass;
+        try {
+            FileInputStream fstream = new FileInputStream("root.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            dbpass = br.readLine();
+            br.close();
+            fstream.close();
+        } catch ( IOException e1) {
+            e1.printStackTrace();
+            return;
+        }
         path = "C:\\Users\\pawit\\Desktop\\backup\\backup";
-        String test = "C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\mysqldump -u root -p kopytko --add-drop-database -B clinicdb -r " + path + "backup";
+        String test = "C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\mysqldump -u root -p"+ dbpass + " --add-drop-database -B clinicdb -r " + path + "backup";
         Process exec;
         Process runtimeProcess;
         String cmd = "cmd.exe";
         String c = "/c";
         String DBPASS;
 
-        String command2 = "mysqldump -u root -pkopytko clinicdb -R -E --triggers > C:\\Users\\pawit\\Desktop\\backup\\backup.sql";
+        String command2 = "mysqldump -u root -p" + dbpass+ " clinicdb -R -E --triggers > C:\\Users\\pawit\\Desktop\\backup\\backup.sql";
         try {
 
             runtimeProcess = Runtime.getRuntime().exec(new String[]{cmd,c,command2});
@@ -118,6 +140,7 @@ public class Login extends Application {
 
             if (processComplete == 0) {
                 System.out.println("DZIALA BACKUP");
+                backup.setText("Backup successfully made!");
                 InputStream inputStream = runtimeProcess.getInputStream();
                 byte[] buffer = new byte[inputStream.available()];
                 inputStream.read(buffer);
@@ -126,6 +149,7 @@ public class Login extends Application {
                 System.out.println(str);
 
             } else {
+                System.out.println("Error while making backup!");
                 InputStream errorStream = runtimeProcess.getErrorStream();
                 byte[] buffer = new byte[errorStream.available()];
                 errorStream.read(buffer);
